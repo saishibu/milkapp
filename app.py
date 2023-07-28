@@ -63,7 +63,7 @@ def milk_purchase():
 
     # Render the template with the graph and data
     return render_template('milk_purchase.html', purchases=purchases, payments=payments,
-                           total_quantity=total_quantity, total_cost=total_cost, graph=graph)
+                           total_quantity=total_quantity, total_cost=total_cost)
 
 # def generate_graph(dates, quantities, costs):
 #     # ... (previous code, unchanged)
