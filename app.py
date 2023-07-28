@@ -59,7 +59,7 @@ def milk_purchase():
     costs = [item['total_cost'] for item in purchases]
 
     # Generate the graph and get the base64 string
-    graph = generate_graph(purchase_dates, quantities, costs)
+    # graph = generate_graph(purchase_dates, quantities, costs)
 
     # Render the template with the graph and data
     return render_template('milk_purchase.html', purchases=purchases, payments=payments,
