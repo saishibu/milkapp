@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Milk Purchase App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 align="center">Milk Purchase App</h1>
+        <form method="post">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <br>
+            <label for="quantity">Milk Quantity (in liters):</label>
+            <!-- Set the step attribute to accept floating-point values -->
+            <input type="number" id="quantity" name="quantity" min="0.1" step="0.1" required>
+            <br>
+            <input type="submit" value="Purchase">
+        </form>
+
+        <h2>Purchase History</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Milk Quantity (liters)</th>
+                <th>Total Cost (Rs)</th>
+            </tr>
+            {% for purchase in purchases %}
+            <tr>
+                <td>{{ purchase['date'] }}</td>
+                <td>{{ purchase['quantity'] }}</td>
+                <td>{{ purchase['total_cost'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Add a clear button -->
+        <form method="post" action="/clear">
+            <input type="submit" value="Clear Purchase History" class="clear-button" onclick="return confirm('Are you sure you want to clear the purchase history?');">
+        </form>
+
+        <h2>Total Purchases and Total Cost</h2>
+        <p>Total Milk Quantity: {{ total_quantity }} liters</p>
+        <p>Total Cost: {{ total_cost }} Rs</p>
+
+        <!-- Display the graph -->
+        {% if graph %}
+            <h2>Milk Quantity and Cost vs Date</h2>
+            <img src="data:image/png;base64,{{ graph }}" alt="Graph">
+        {% endif %}
+
+    </div>
+</body>
+</html>
