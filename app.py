@@ -65,11 +65,11 @@ def milk_purchase():
     return render_template('milk_purchase.html', purchases=purchases, payments=payments,
                            total_quantity=total_quantity, total_cost=total_cost, graph=graph)
 
-def generate_graph(dates, quantities, costs):
-    # ... (previous code, unchanged)
+# def generate_graph(dates, quantities, costs):
+#     # ... (previous code, unchanged)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
 
     # graph = generate_graph(dates, quantities, costs)
 
