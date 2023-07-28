@@ -3,13 +3,18 @@
 <head>
     <title>Milk Purchase App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1 align="center">Milk Purchase App</h1>
-        <form method="post">
+        <h1>Milk Purchase App</h1>
+
+        <!-- Milk Purchase Form -->
+        <form method="post" action="/purchase">
+            <h2>Milk Purchase</h2>
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required>
+
             <br>
             <label for="quantity">Milk Quantity (in liters):</label>
             <!-- Set the step attribute to accept floating-point values -->
@@ -18,6 +23,7 @@
             <input type="submit" value="Purchase">
         </form>
 
+        <!-- Purchase History Table -->
         <h2>Purchase History</h2>
         <table>
             <tr>
@@ -34,55 +40,83 @@
             {% endfor %}
         </table>
 
-        <!-- Add a clear button -->
-        <form method="post" action="/clear">
-            <input type="submit" value="Clear Purchase History" class="clear-button" onclick="return confirm('Are you sure you want to clear the purchase history?');">
+        <!-- Quantity Graph -->
+        <div>
+            {% if quantity_graph %}
+                <h2>Milk Quantity vs Date</h2>
+                <div id="quantity_graph">{{ quantity_graph | safe }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Payment Form -->
+        <form method="post" action="/payment"> 
+            <h2>Add Payment</h2>
+            <label for="payment_date">Date:</label>
+            <input type="date" id="payment_date" name="date" required>
+            <br>
+            <label for="amount">Amount (Rs):</label>
+            <input type="number" id="amount" name="amount" min="0.1" step="0.1" required>
+            <br>
+            <input type="submit" value="Add Payment">
         </form>
 
+        <!-- Payment History Table -->
+        <h2>Payment History</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Amount (Rs)</th>
+            </tr>
+            {% for payment in payments %}
+            <tr>
+                <td>{{ payment['date'] }}</td>
+                <td>{{ payment['amount'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Cost Graph -->
+        <div>
+            {% if cost_graph %}
+                <h2>Total Cost vs Date</h2>
+                <div id="cost_graph">{{ cost_graph | safe }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Total Purchases and Total Cost -->
         <h2>Total Purchases and Total Cost</h2>
         <p>Total Milk Quantity: {{ total_quantity }} liters</p>
         <p>Total Cost: {{ total_cost }} Rs</p>
-
-        <!-- ... (previous code) -->
-
-
-
-<!-- ... (previous code) -->
-
-<form method="post">
-    <h2>Add Payment</h2>
-    <label for="payment_date">Date:</label>
-    <input type="date" id="payment_date" name="date" required>
-    <br>
-    <label for="amount">Amount (Rs):</label>
-    <input type="number" id="amount" name="amount" min="0.1" step="0.1" required>
-    <br>
-    <input type="submit" value="Add Payment">
-</form>
-
-<!-- ... (previous code) -->
-
-    <h2>Payment History</h2>
-<table>
-    <tr>
-        <th>Date</th>
-        <th>Amount (Rs)</th>
-    </tr>
-    {% for payment in payments %}
-    <tr>
-        <td>{{ payment['date'] }}</td>
-        <td>{{ payment['amount'] }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-        
-        <!-- Display the graph -->
-<!--         {% if graph %}
-            <h2>Milk Quantity and Cost vs Date</h2>
-            <img src="data:image/png;base64,{{ graph }}" alt="Graph">
-        {% endif %} -->
-
+    
+        <!-- Clear Purchase History Button -->
+        <form method="post" action="/clear_purchase" onsubmit="handleFormSubmission(event)">
+            <input type="submit" value="Clear Purchase History">
+        </form>
+    
+        <!-- Clear Payment History Button -->
+        <form method="post" action="/clear_payment" onsubmit="handleFormSubmission(event)">
+            <input type="submit" value="Clear Payment History">
+        </form>
+    
+        <script>
+            function handleFormSubmission(event) {
+                // Send the form submission request
+                fetch(event.target.action, {
+                    method: 'POST',
+                })
+                .then(response => {
+                    // If the request is successful (status code 204), reload the page
+                    if (response.status === 204) {
+                        location.reload();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+                // Prevent the default form submission behavior
+                event.preventDefault();
+            }
+        </script>
+    
     </div>
-</body>
-</html>
+    </body>
+    </html>
+    
