@@ -9,10 +9,10 @@ html, body, h1, h2, h3, h4, h5, h6, p, ol, ul {
   
   /* Set background image */
   body {
-    background-image: url('/static/background.jpg');
+/*     background-image: url('/static/background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: fixed; */
     font-family: Arial, sans-serif;
   }
   
